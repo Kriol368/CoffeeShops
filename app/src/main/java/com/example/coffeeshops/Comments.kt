@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,19 +60,20 @@ val sampleComments = listOf(
 fun Comments(coffeeShopName: String) {
     val gridState = rememberLazyStaggeredGridState()
     var isButtonVisible by remember { mutableStateOf(true) }
-    var lastScrollTime by remember { mutableStateOf(0L) }
+    var firstVisibleItemIndex by remember { mutableStateOf(0) }
+
+    val showButton by remember {
+        derivedStateOf {
+            val currentFirstVisibleItem = gridState.firstVisibleItemIndex
+            val isScrollingUp = currentFirstVisibleItem <= firstVisibleItemIndex
+
+            firstVisibleItemIndex = currentFirstVisibleItem
+            isScrollingUp || currentFirstVisibleItem == 0
+        }
+    }
 
     LaunchedEffect(gridState.isScrollInProgress) {
-        if (gridState.isScrollInProgress) {
-            delay(100)
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastScrollTime > 150) {
-                isButtonVisible = false
-                lastScrollTime = currentTime
-            }
-        } else {
-            isButtonVisible = true
-        }
+        isButtonVisible = showButton
     }
 
     Box(
@@ -99,7 +101,7 @@ fun Comments(coffeeShopName: String) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                verticalItemSpacing = 12.dp,
+                verticalItemSpacing = 16.dp,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = PaddingValues(bottom = 80.dp),
                 state = gridState
