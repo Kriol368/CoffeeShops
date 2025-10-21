@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -25,10 +26,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
 
 val sampleComments = listOf(
@@ -52,7 +56,7 @@ val sampleComments = listOf(
 )
 
 @Composable
-fun Comments(coffeeShopName: String, navController: NavHostController) {
+fun Comments(coffeeShopName: String) {
     val gridState = rememberLazyStaggeredGridState()
     var isButtonVisible by remember { mutableStateOf(true) }
     var lastScrollTime by remember { mutableStateOf(0L) }
@@ -82,7 +86,9 @@ fun Comments(coffeeShopName: String, navController: NavHostController) {
                 text = coffeeShopName,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
+                fontSize = 32.sp,
+                fontFamily = FontFamily(Font(R.font.aliviaregular)),
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
@@ -110,10 +116,11 @@ fun Comments(coffeeShopName: String, navController: NavHostController) {
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 16.dp)
-                    .fillMaxWidth(0.9f)
-                    .height(50.dp)
+                    .fillMaxWidth(0.5f)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF99AAA))
             ) {
-                Text("Add New Comment")
+                Text("Add new comment")
             }
         }
     }
@@ -124,12 +131,15 @@ fun CommentCard(comment: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFBE3E3))
     ) {
         Text(
             text = comment,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(12.dp)
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 10.sp,
+                lineHeight = 12.sp
+            ),            modifier = Modifier.padding(12.dp)
         )
     }
 }

@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -32,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -78,11 +79,12 @@ fun CoffeeShopCard(coffeeShop: CoffeeShop, onItemClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFFBE3E3)
+        )
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
+        Column {
             Image(
                 painter = painterResource(id = coffeeShop.imageRes),
                 contentDescription = "Imagen de ${coffeeShop.name}",
@@ -91,48 +93,56 @@ fun CoffeeShopCard(coffeeShop: CoffeeShop, onItemClick: () -> Unit) {
                     .height(200.dp),
                 contentScale = ContentScale.Crop
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = coffeeShop.name,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            StarRatingBar(
-                rating = rating,
-                onRatingChange = { newRating ->
-                    rating = newRating
-                }
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = coffeeShop.address,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            HorizontalDivider(
-                modifier = Modifier.fillMaxWidth(),
-                thickness = 1.dp,
-                color = Color.LightGray
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Button(
-                onClick = {},
+            Column(
+                modifier = Modifier.padding(16.dp)
             ) {
-                Text("RESERVE")
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = coffeeShop.name,
+                    fontFamily = FontFamily(Font(R.font.aliviaregular)),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                StarRatingBar(
+                    rating = rating,
+
+                    onRatingChange = { newRating ->
+                        rating = newRating
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = coffeeShop.address,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 1.dp,
+                    color = Color.LightGray
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "RESERVE",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFFE88C9C),
+                    fontWeight = FontWeight.Bold
+                )
+
+
             }
+
+
         }
     }
 }
