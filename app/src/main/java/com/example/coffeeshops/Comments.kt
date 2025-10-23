@@ -60,6 +60,7 @@ fun Comments(coffeeShopName: String) {
     val gridState = rememberLazyStaggeredGridState()
     var isButtonVisible by remember { mutableStateOf(false) }
     var firstVisibleItemIndex by remember { mutableStateOf(0) }
+    var scrollToTopTrigger by remember { mutableStateOf(0) }
 
     val showButton by remember {
         derivedStateOf {
@@ -73,6 +74,12 @@ fun Comments(coffeeShopName: String) {
 
     LaunchedEffect(gridState.isScrollInProgress) {
         isButtonVisible = showButton
+    }
+
+    LaunchedEffect(scrollToTopTrigger) {
+        if (scrollToTopTrigger > 0) {
+            gridState.animateScrollToItem(0)
+        }
     }
 
     Box(
@@ -113,7 +120,9 @@ fun Comments(coffeeShopName: String) {
 
         if (isButtonVisible) {
             Button(
-                onClick = {},
+                onClick = {
+                    scrollToTopTrigger++
+                },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 16.dp)
