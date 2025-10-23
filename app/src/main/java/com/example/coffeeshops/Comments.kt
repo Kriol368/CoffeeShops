@@ -34,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
 
 val sampleComments = listOf(
     "Servicio algo flojo, aún así lo recomiendo",
@@ -59,16 +58,16 @@ val sampleComments = listOf(
 @Composable
 fun Comments(coffeeShopName: String) {
     val gridState = rememberLazyStaggeredGridState()
-    var isButtonVisible by remember { mutableStateOf(true) }
+    var isButtonVisible by remember { mutableStateOf(false) }
     var firstVisibleItemIndex by remember { mutableStateOf(0) }
 
     val showButton by remember {
         derivedStateOf {
             val currentFirstVisibleItem = gridState.firstVisibleItemIndex
-            val isScrollingUp = currentFirstVisibleItem <= firstVisibleItemIndex
+            val isScrollingDown = currentFirstVisibleItem > firstVisibleItemIndex
 
             firstVisibleItemIndex = currentFirstVisibleItem
-            isScrollingUp || currentFirstVisibleItem == 0
+            isScrollingDown && currentFirstVisibleItem != 0
         }
     }
 
